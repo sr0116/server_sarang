@@ -13,7 +13,7 @@ public class MemberService {
 		try (SqlSession session = MybatisUtil.getSqlSession()) {
 			MemberMapper mapper = session.getMapper(MemberMapper.class);
 			return mapper.insert(member);
-		} catch (Exception e) {
+		} catch (Exception e) { 
 			e.printStackTrace();
 		}
 		return 0;
