@@ -20,7 +20,6 @@
     </plugins>
   </build>
   <dependencies>
-  
 <!-- https://mvnrepository.com/artifact/com.zaxxer/HikariCP -->
 <dependency>
     <groupId>com.zaxxer</groupId>
