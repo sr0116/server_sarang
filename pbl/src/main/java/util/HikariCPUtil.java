@@ -5,15 +5,18 @@ import javax.sql.DataSource;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
+import net.sf.log4jdbc.sql.jdbcapi.DriverSpy;
+
 public class HikariCPUtil {
 	private static HikariDataSource dataSource;
 	static {
 		HikariConfig config = new HikariConfig();
-		config.setJdbcUrl("jdbc:mariadb://np.imchobo.com:3306/pbl");
+		config.setJdbcUrl("jdbc:log4jdbc:mariadb://np.imchobo.com:3306/pbl");
 		config.setUsername("sample");
 		config.setPassword("1234");
-		config.setDriverClassName("org.mariadb.jdbc.Driver");
 		
+//		config.setDriverClassName("org.mariadb.jdbc.Driver");
+		config.setDriverClassName("net.sf.log4jdbc.sql.jdbcapi.DriverSpy");
 		config.setMaximumPoolSize(10);
 		config.setMinimumIdle(5);
 		config.setIdleTimeout(30000);

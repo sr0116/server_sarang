@@ -28,7 +28,7 @@ public class LifeCycle extends HttpServlet {
 	@Override
 	public void destroy() {
 		destCnt++;
-		System.out.println("destory(얌얌)");
+		System.out.println("destory(얌얌얌얌)");
 		}
 	
 	void prinCnts() {
