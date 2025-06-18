@@ -1,6 +1,7 @@
 package controller.member;
 
 import java.io.IOException;
+import java.net.URLDecoder;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -36,8 +37,14 @@ public class Login extends HttpServlet {
 		HttpSession session = req.getSession();
 		session.setMaxInactiveInterval(60 * 10);
 		session.setAttribute("member", new MemberService().findByID(id));
-		resp.sendRedirect(req.getContextPath() + "/index");
 		
+		String url = req.getParameter("url");
+		if(url== null) {
+		resp.sendRedirect(req.getContextPath() + "/index");
+		}
+		else  { 
+			resp.sendRedirect(URLDecoder.decode(url, "utf-8"));
+		}
 		
 	}
 	else { // 로그인 실패

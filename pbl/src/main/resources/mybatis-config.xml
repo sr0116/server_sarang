@@ -7,8 +7,7 @@
 		<package name="domain" />
 	</typeAliases>
 	<mappers>
-		<!-- <mapper class="mapper.ReviewMapper" />
-		<mapper class="mapper.MemberMapper" /> -->
+	
 		<package name="mapper"/>
 	</mappers>
 </configuration>
