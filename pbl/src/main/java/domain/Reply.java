@@ -10,9 +10,9 @@ public class Reply {
 	
 
 	private Long rno; // 번호
-	private String content; // 게시글
+	private String content; // 내용
 	private String id; // 아이디
 	private String regdate; // 작성일시
-	private String bno; // 
+	private Long bno; //  // 게시글 번호
 
 }

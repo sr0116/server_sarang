@@ -3,28 +3,70 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
  <mapper namespace="mapper.BoardMapper">
+ 	<sql id = "criteria">
+ 	<where>
+ 
+ 	<trim prefixOverrides="And \ OR">
+ 		<if test="cno != null">
+ 		and cno = #{cno}
+ 		</if>
+ 		<if test="types != null">
+ 			<foreach collection="types" item="t" open="and (" close=")" separator="or" >
+ 				<choose>
+ 					<when test="t eq'T'.toString()">
+ 					title like concat('%', #{keyword}, '%')
+ 					</when>
+ 					<when test="t eq 'C'.toString()">
+ 					content like concat('%', #{keyword}, '%')
+ 					</when>
+ 					<when test="t eq 'I'.toString()">
+ 					id like concat('%', #{keyword}, '%')
+ 					</when>
+ 				</choose>
+ 			
+ 			</foreach>
+ 		</if>
+ 		</trim>
+ 	</where>
+ 	</sql>
+ 	
+ 	<!-- 목록 조회 -->
  	<select id="list" resultType="domain.Board">
  	select * from tbl_board 
- 	where cno = #{cno}
- 	<!-- and title like  concat('%', #{keyword}, '%') -->
- 	
+ 	<include refid="criteria" />
  	order by bno desc 
  	limit #{amount} offset #{offset}
  	</select>
+ 	
+	<!-- 단일 조회 -->
  	<select id="selectOne" resultType="board">
  		select * from tbl_board where bno = #{bno}
  	</select>
+ 	
+ 	<!-- 글등록-->
  	<insert id ="insert">
  	insert into tbl_board( title, content, id, cno) values (#{title}, #{content}, #{id}, #{cno})
   	</insert>
   	
+  	<!-- 게시글 갯수 -->
   	<select id="getCount" resultType="long">
-  	select count(*) from tbl_board where cno = #{cno} 
+  	select count(*) from tbl_board 
+  	<include refid="criteria" />
   	</select>
   	
-  	<!-- 
-  	#{var} -> 필요한 형태의 데이터 타입으로 만들어주는 것임
-  	${var} -> 사용 하지않기 sql 이 보안이 취약함
+  	<!-- 글수정   -->
+  	<update id="update">
+  	update tbl_board set
+	title = #{title},
+	content = #{content},
+	moddate = now(),
+	cno = #{cno}
+	where bno = #{bno}
+  	</update>
   	
-  	 -->
+	<!-- 글 삭제   -->
+  	<delete id="delete">
+  	delete from tbl_board where bno = #{bno}
+  	</delete>
+  	
  </mapper>

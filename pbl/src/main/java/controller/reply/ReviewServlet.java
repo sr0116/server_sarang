@@ -1,4 +1,4 @@
-package service;
+package controller.reply;
 
 import java.util.List;
 
@@ -8,7 +8,7 @@ import domain.Review;
 import mapper.ReviewMapper;
 import util.MybatisUtil;
 
-public class ReviewService {
+public class ReviewServlet {
 	
     public Review findBy(Long rno) {
         try(SqlSession session = MybatisUtil.getSqlSession()) {

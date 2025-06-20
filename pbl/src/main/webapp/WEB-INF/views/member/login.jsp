@@ -9,8 +9,8 @@
 <body>
 
 <form method="post">
-		<input name="id" placeholder="id">
-		<input type="password" name="pw">
+		<input name="id" placeholder="id" value="sr">
+		<input type="password" name="pw" value="sr">
 		
 		<button>로그인</button>		
 	</form>

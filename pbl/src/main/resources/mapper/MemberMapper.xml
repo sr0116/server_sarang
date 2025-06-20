@@ -14,7 +14,7 @@
  		<result column="id" property="id" />
  	</resultMap>
  	
- 	<select id="findById" resultMap="memberMap">
+<!--  	<select id="findById" resultMap="memberMap">
  	select * from tbl_member where id = #{id}
- 	</select>
+ 	</select> -->
  </mapper>

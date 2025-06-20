@@ -59,4 +59,21 @@ public class BoardService {
 		
 	}
 
+	public void modify(Board board) {
+		try (SqlSession session = MybatisUtil.getSqlSession()) {
+			BoardMapper mapper = session.getMapper(BoardMapper.class);
+			mapper.update(board);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	public void remove(Long bno) {
+		try (SqlSession session = MybatisUtil.getSqlSession()) {
+			BoardMapper mapper = session.getMapper(BoardMapper.class);
+			mapper.delete(bno);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
 }

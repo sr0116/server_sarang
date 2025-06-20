@@ -15,12 +15,15 @@ public interface BoardMapper {
 	
 	List<Board> list(Criteria cri);
   
-  
 	Board selectOne(Long bno);
 	
 	void insert(Board board);
 	
 	long getCount(Criteria cri);
+
+	void update(Board board);
+	
+	void delete(Long bno);
 
 
 
