@@ -20,9 +20,13 @@
  	select * from tbl_reply where rno = #{rno}
  	</select>
  	
-	<insert id="insert"> 
-	insert into tbl_reply (content,id, bno) values (#{content}, #{id}, #{bno}) 
-	</insert>
+ 	<!--  글등록 -->
+	 <insert id="insert">
+          insert into tbl_reply (content, id, bno) values (#{content}, #{id}, #{bno})
+          <selectKey resultType="long" keyProperty="rno" order="AFTER">
+              select max(rno) from tbl_reply
+          </selectKey>
+    </insert>
 	
 	<update id="update">
 	update tbl_reply set content = #{content} where rno =#{rno}

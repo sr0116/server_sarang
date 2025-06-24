@@ -59,6 +59,9 @@
              <ul class="list-group list-group-flush mt-3 reviews">
 	            <!--  댓글 ul태그-->
         	</ul>
+        	<div class="d-grid">
+        	<button class="btn btn-primary btn-block btn-reply-more d-none">댓글 더보기</button>
+        	</div>
         </main>
         
 	  </div>
@@ -107,33 +110,47 @@
 	        	const bno = '${board.bno}'
 	            const url = '${cp}' + '/reply/';
 	            const modal = new bootstrap.Modal($("#reviewModal").get(0), {})
+	            
+	            //makeReplyLi(reply)> str ())
+	            
+	            function makeReplyLi(r) {
+            	  return `
+	                  <li class="list-group-item ps-5 profile-img" data-rno="\${r.rno}"">
+	                     <p class="small text-secondary">
+	                         <span class="me-3">\${r.id}</span>
+	                         <span class="me-3">\${dayjs(r.regdate, dayForm).fromNow()}</span>
+	                     </p>
+	                     <p class="small ws-pre-line">\${r.content}</p>
+	                     <button class="btn btn-danger btn-sm float-end btn-remove-submit">삭제</button>
+	                     <button class="btn btn-warning btn-sm float-end mx-3 btn-modify-form">수정</button>
+	             		 </li>
+	                  	`;
+				}
 	            function list(bno, lastRno) {
-	            	lastRno = lastRno ? ('/' + lastrno) : '';
-	            	let reqUrl = url + 'list/' + bno +"/" + lastRno;
+	            	lastRno = lastRno ? ('/' + lastRno) : '';
+	            	let reqUrl = url + 'list/' + bno  + lastRno;
 	            	
 	                $.ajax({
 	                    url: reqUrl,
 	                    success: function (data) {
-	                        if (!data) return;
+	                        if (!data || data.length === 0){	                        	
+	                        	if($(".reviews li").length === 0) {
+		                        	$(".reviews").html('<li class="list-group-item text-center text-muted">댓글이 없습니다.</li>');	                        		
+	                        	}
+	                        	else{
+	                        		$(".btn-reply-more").prop("disabled", true).text("추가 댓글이 없습니다.");
+	                        	}
+	                        	return;
+	                        }
+	                        $(".btn-reply-more").removeClass("d-none");
 	                        let str = '';
 	                        for (let r of data) {
 	                            console.log(r);
-	                            str += `
-	                            <li class="list-group-item ps-5 profile-img" data-rno="\${r.rno}"">
-		                            <p class="small text-secondary">
-		                                <span class="me-3">\${r.id}</span>
-		                                <span class="me-3">\${ 	dayjs(r.regdate, dayForm).fromNow()}</span>
-		                            </p>
-		                            <p class="small ws-pre-line">\${r.content}</p>
-		                            <button class="btn btn-danger btn-sm float-end btn-remove-submit">삭제</button>
-		                            <button class="btn btn-warning btn-sm float-end mx-3 btn-modify-form">수정</button>
-	                       		 </li>
-	                            	`;
+	                            str += makeReplyLi(r);
 	                        }
-	                        $(".reviews").html(str);
+	                        $(".reviews").append(str); // 교체가 아니라 추가
 	                    }
 	                });
-	
 	            }
 	            list(bno);
 	
@@ -164,7 +181,15 @@
 	                    success : function(data) {
 	                        if(data.result){
 	                            modal.hide();
-	                            list(bno);
+	                         // 작성된 댓글, 제일 상단에 추가 prepend
+	                         // 글을 쓰고 응답 데이터가 와야됨
+	                         //register return 타입이 바뀌어야 함
+	                         if(data.reply) {
+	                        	date.reply.regdate = dayjs().format(dayForm);
+	                        	const strLi = makeReplyLi(data.reply);
+	                        	$(".reviews").prepend(strLi);
+	                         }
+	                         	
 	                        }
 	                    }
 	                })
@@ -204,8 +229,18 @@
 	                    data : JSON.stringify(obj),
 	                    success : function(data) { //poastmad에서의 result
 	                        if(data.result){
-	                            // list();
 	                            modal.hide();
+	                            //재호출(get)
+	                            $.getJSON(url + rno, function(data) {
+	                            	console.log(data);
+	                            	// 문자열 생성 (기존 것을 덮어서 없애고 생성)
+	                            	const strLi = makeReplyLi(data);
+	                            	// rno를 가지고 수정할 li 를 탐색
+	                            	const $li =  $(`.reviews li[data-rno='\${rno}']`);
+	                            	//console.log($li.html());
+	                            	//replaceWith로 내용 교체
+	                            	$li.replaceWith(strLi);
+	                            })
 	                        }
 	                    }
 	                })
@@ -215,23 +250,32 @@
 	            // 글 삭제 버튼 이벤트 btn-remove-submit
 	            $(".reviews").on("click", ".btn-remove-submit", function() {
 	                
-	                
 	                const result = confirm("삭제 하시겠습니까?");
 	                if(!result) return;
-	
+					const $li = $(this).closest("li");
 	                const rno = $(this).closest("li").data("rno");
 	                console.log("글삭제 전송");
+	                
 	                $.ajax({
 	                    url : url + rno,
 	                    method : 'DELETE',
 	                    success : function(data) { //poastmad에서의 result
 	                        if(data.result){
-	                            //list();
+	                        	$li.remove();
 	                        }
 	                    }
 	                })
 	            })
-	
+	            
+	            //댓글 더보기 버튼 이벤트
+	            $(".btn-reply-more").click(function() {
+	            	// 현재 댓글 목록중 마지막 댓글의 댓글 번호를 가져오기
+	            	const lastRno = $(".reviews li:last").data("rno");
+	            	console.log(lastRno);
+	            	//list(bno, lastRno) 호출 
+	            	list(bno,lastRno)
+	            	
+	            });
 	        });   
     </script>
 </body>

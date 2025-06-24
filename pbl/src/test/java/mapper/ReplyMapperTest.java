@@ -69,6 +69,16 @@ public class ReplyMapperTest {
 	
 
 	}
+	
+	@Test
+	@DisplayName("글등록테스트")
+	public void testInsert() {
+		Reply reply = Reply.builder().content("매퍼 테스트 글 등록").id("sr").bno(538L).build();
+		log.info("{}", reply);
+		replyMapper.insert(reply);
+		log.info("{}", reply);
+	}
+	
 }
 
 	

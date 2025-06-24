@@ -6,12 +6,13 @@ import lombok.Data;
 @Data
 @Builder
 public class Attach {
-//		
-	private String uuid; // 
-	private String path; // 
-	private boolean image; // 
-	private String origin; // 
-	private String bno; // 
-	private Long rno; // 번호
+		
+	private String uuid;  
+	private String path; 
+	private boolean image;  
+	private String origin;  
+	private String bno;  
+	private Long rno; 
+	private int odr; 
 
 }

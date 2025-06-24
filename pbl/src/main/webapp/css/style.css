@@ -5,7 +5,7 @@
         header, footer {padding: 1em; background: #222; color: #eee; text-align: center;}
 	
          .resize-none{resize: none;}
-        .container {width: 1200px; margin: 0 auto;}
+        .container {max-width: 1200px; margin: 0 auto;}
         /* ck경고창 무시용 */
          .cke_notifications_area {display: none !important;}
         /* nav */
