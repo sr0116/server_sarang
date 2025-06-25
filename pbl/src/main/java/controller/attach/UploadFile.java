@@ -69,6 +69,7 @@ public class UploadFile extends HttpServlet {
 			String fileName = uuid + ext;
 			
 			boolean image = contentType.startsWith("image");
+			log.info("{}", image);
 			String path = genPath();
 			
 			String realPath = UPLOAD_PATH + "/" + path + "/";
@@ -77,6 +78,7 @@ public class UploadFile extends HttpServlet {
 				file.mkdirs();
 			}
 			
+			// 섬네일 생성 
 			part.write(realPath + fileName);
 			if (image) {
 				try {

@@ -46,6 +46,12 @@
         main::after{display: block; content: ''; clear: both;}
         footer {clear: both;}
                 /* 121 112 */
+                
+       /* 취소버튼*/         
+       .attach-area i{cursor:pointer;}         
+       
+       /* 썸네일*/         
+       .attach-thumb div div { background: no-repeat center;}         
 
         /* misc */
         .arrow-area i {position: fixed; bottom: 100px; right: 100px; font-size: 3em; display: none; 
