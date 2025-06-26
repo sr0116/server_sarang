@@ -24,8 +24,10 @@ public interface BoardMapper {
 	void update(Board board);
 	
 	void delete(Long bno);
+	
+	void increseCnt(Long bno);
 
-
+	
 
 
 }

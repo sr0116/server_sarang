@@ -80,37 +80,36 @@
 	                <fmt:formatDate value= "${parsedDate}" pattern="yy.MM.dd"/>
 	                </span>
               </div>
-	                <div class="col-1 small"><span class="small">${board.cnt}</span></div>
-	          </div>
-		      </a>
-		       </c:forEach> 
-				</div>	
-				
-				<ul class="pagination  justify-content-center">
-				<c:if test="${pageDto.doubleLeft}">
-				<li class="page-item"><a class="page-link" href="list?page=1&${pageDto.cri.qs}"><i class="fa-solid fa-angles-left"></i></a></li>
-				</c:if>
-				<c:if test="${pageDto.left}">
-					<li class="page-item"><a class="page-link" href="list&page=${pageDto.start-1}&${pageDto.cri.qs}"><i class="fa-solid fa-angle-left"></i></a></li>
-					</c:if>	
-					
-					<c:forEach begin="${pageDto.start}" end="${pageDto.end}" var="i">
-					
-				  	<li class="page-item ${pageDto.cri.page == i ? 'active' : ''}"><a class="page-link" href="list?page=${i}&${pageDto.cri.qs}">${i}</a></li>
-				  
-				  </c:forEach>
-				  
-				  <c:if test="${pageDto.right}">
-					<li class="page-item"><a class="page-link" href="list?page=${pageDto.end + 1}&${pageDto.cri.qs}"><i class="fa-solid fa-angle-right" ></i></a></li>
-					</c:if>
-					
-					<c:if test="${pageDto.doubleRight}">	
-						<li class="page-item"><a class="page-link" href="list?page=${pageDto.realEnd}&${pageDto.cri.qs}"><i class="fa-solid fa-angles-right"></i></a></li>
-					</c:if>		
-				</ul>
-		</main>
-		</div>	
-	<%@ include file="../common/footer.jsp"%>
-
+                        <div class="col-1 small"><span class="small">${board.cnt}</span></div>
+                    </div>
+                </a>
+                </c:forEach>
+                <div>
+            </div>
+<%--             ${pageDto} --%>
+            <ul class="pagination justify-content-center pt-4">
+            	<c:if test="${pageDto.doubleLeft}">
+  					<li class="page-item"><a class="page-link" href="list?page=1&${pageDto.cri.qs}"><i class="fa-solid fa-angles-left"></i></a></li>
+  				</c:if>
+  				
+  				<c:if test="${pageDto.left}">
+  					<li class="page-item"><a class="page-link" href="list?page=${pageDto.start-1}&${pageDto.cri.qs}"><i class="fa-solid fa-angle-left"></i></a></li>
+  				</c:if>
+  				
+  				<c:forEach begin="${pageDto.start}" end="${pageDto.end}" var="i">
+	  				<li class="page-item ${pageDto.cri.page == i ? 'active' : ''}"><a class="page-link" href="list?page=${i}&${pageDto.cri.qs}">${i}</a></li>
+  				</c:forEach>
+  				
+  				<c:if test="${pageDto.right}">
+  					<li class="page-item"><a class="page-link" href="list?page=${pageDto.end+1}&${pageDto.cri.qs}"><i class="fa-solid fa-angle-right"></i></a></li>
+  				</c:if>
+  				
+  				<c:if test="${pageDto.doubleRight}">
+  					<li class="page-item"><a class="page-link" href="list?page=${pageDto.realEnd}&${pageDto.cri.qs}"><i class="fa-solid fa-angles-right"></i></a></li>
+  				</c:if>
+			</ul>
+        </main>
+    </div>
+<%@ include file="../common/footer.jsp" %>
 </body>
 </html>

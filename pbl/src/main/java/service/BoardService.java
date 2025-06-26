@@ -17,18 +17,19 @@ public class BoardService {
 		try (SqlSession session = MybatisUtil.getSqlSession()) {
 			BoardMapper mapper = session.getMapper(BoardMapper.class);
 			List<Board> list = mapper.list(cri);
-			long cnt = mapper.getCount(cri);
 			return list;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return null;
 	}
-	
+//	조회수
 	public Board findBy(Long bno) {
 		try (SqlSession session = MybatisUtil.getSqlSession()) {
 			BoardMapper mapper = session.getMapper(BoardMapper.class);
-			return mapper.selectOne(bno);
+			mapper.increseCnt(bno);
+			Board board = mapper.selectOne(bno);
+			return board;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -36,8 +37,9 @@ public class BoardService {
 	}
 
 	public void write(Board board) {
+		SqlSession session = MybatisUtil.getSqlSession(false);
 		// 나중에 글번호 반환 필요할수도 있음
-		try (SqlSession session = MybatisUtil.getSqlSession(false)) {
+		try  {//비동기 방식
 			BoardMapper mapper = session.getMapper(BoardMapper.class);
 			mapper.insert(board);
 			AttachMapper attachMapper = session.getMapper(AttachMapper.class);
@@ -46,9 +48,10 @@ public class BoardService {
 				attachMapper.insert(a);
 			});
 			session.commit();
-			
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			session.close();
 		}
 	}
 	public long getCount(Criteria cri) {
@@ -68,11 +71,26 @@ public class BoardService {
 	}
 
 	public void modify(Board board) {
-		try (SqlSession session = MybatisUtil.getSqlSession()) {
+		SqlSession session = MybatisUtil.getSqlSession(false);
+		try {
 			BoardMapper mapper = session.getMapper(BoardMapper.class);
 			mapper.update(board);
+			
+			AttachMapper attachMapper = session.getMapper(AttachMapper.class);
+			//기존 첨부파일 메타 데이터 삭제
+			attachMapper.deleteByBno(board.getBno());
+			
+			//새 첨부파일 메타 데이터 등록
+			board.getAttachs().forEach(a -> {
+				a.setBno(board.getBno());
+				attachMapper.insert(a);
+			});
+			session.commit();
 		} catch (Exception e) {
+			session.rollback();
 			e.printStackTrace();
+		} finally {
+			session.close();
 		}
 	}
 	public void remove(Long bno) {

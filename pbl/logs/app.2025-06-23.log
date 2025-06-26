@@ -1,0 +1,45 @@
+10:48:03.486 [main] INFO  sqltiming - delete from tbl_reply where rno = 4
+ {executed in 11 msec}
+10:48:03.553 [main] INFO  sqltiming - select * from tbl_reply where bno = 539
+
+	and rno < 35
+
+	order by rno desc limit 5
+ {executed in 7 msec}
+10:48:03.581 [main] INFO  ReplyMapperTest - 댓글 테스트
+10:48:03.583 [main] INFO  ReplyMapperTest - 댓글 테스트
+10:48:03.583 [main] INFO  ReplyMapperTest - 댓글 테스트
+10:48:03.583 [main] INFO  ReplyMapperTest - 댓글 테스트
+10:48:03.583 [main] INFO  ReplyMapperTest - 댓글 테스트
+10:48:03.600 [main] INFO  sqltiming - select * from tbl_reply where rno = 7
+ {executed in 6 msec}
+10:48:03.601 [main] INFO  ReplyMapperTest - Reply(rno=7, content=수정하기, id=sr, regdate=2025-06-20 10:48:19, bno=539)
+10:48:03.647 [main] INFO  sqltiming - insert into tbl_reply (content,id, bno) values ('매퍼 테스트', 'sr', 538)
+ {executed in 7 msec}
+10:48:03.653 [main] INFO  sqltiming - select max(rno) from tbl_reply
+ {executed in 5 msec}
+10:48:03.657 [main] INFO  ReplyMapperTest - Reply(rno=null, content=매퍼 테스트 글 등록, id=sr, regdate=null, bno=538)
+10:48:03.696 [main] INFO  sqltiming - insert into tbl_reply (content,id, bno) values ('매퍼 테스트 글 등록', 'sr', 538)
+ {executed in 8 msec}
+10:48:03.703 [main] INFO  sqltiming - select max(rno) from tbl_reply
+ {executed in 7 msec}
+10:48:03.704 [main] INFO  ReplyMapperTest - Reply(rno=287, content=매퍼 테스트 글 등록, id=sr, regdate=null, bno=538)
+10:48:03.739 [main] INFO  sqltiming - select * from tbl_reply where rno = 7
+ {executed in 7 msec}
+10:48:03.749 [main] INFO  sqltiming - update tbl_reply set content = '수정하기' where rno =7
+ {executed in 9 msec}
+10:48:03.778 [main] INFO  sqltiming - select * from tbl_reply where bno = 539
+
+	order by rno desc limit 5
+ {executed in 5 msec}
+10:48:03.780 [main] INFO  ReplyMapperTest - kk
+10:48:03.781 [main] INFO  ReplyMapperTest - dd
+10:48:03.781 [main] INFO  ReplyMapperTest - 화면에서의 댓글 작성 테스트
+10:48:03.781 [main] INFO  ReplyMapperTest - 댓글 테스트
+10:48:03.781 [main] INFO  ReplyMapperTest - 댓글 테스트
+10:48:35.536 [main] INFO  ReplyMapperTest - Reply(rno=null, content=매퍼 테스트 글 등록, id=sr, regdate=null, bno=538)
+10:48:35.578 [main] INFO  sqltiming - insert into tbl_reply (content,id, bno) values ('매퍼 테스트 글 등록', 'sr', 538)
+ {executed in 8 msec}
+10:48:35.585 [main] INFO  sqltiming - select max(rno) from tbl_reply
+ {executed in 5 msec}
+10:48:35.603 [main] INFO  ReplyMapperTest - Reply(rno=288, content=매퍼 테스트 글 등록, id=sr, regdate=null, bno=538)

@@ -55,7 +55,7 @@ public class Write extends HttpServlet {
 		String id = req.getParameter("id");
 		Integer cno = Integer.valueOf(req.getParameter("cno"));//
 		
-		// 첨부파일 내영 수집 
+		// 첨부파일 내용 수집 
 		
 		String encodedStr = req.getParameter("encodedStr");
 		Type type =new  TypeToken<List<Attach>>() {}.getType();

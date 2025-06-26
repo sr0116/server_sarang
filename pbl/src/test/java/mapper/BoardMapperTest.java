@@ -22,10 +22,10 @@ public class BoardMapperTest {
 		assertEquals(2, result);
 	}
 	
-	
+//	단일조회
 	@Test
 	public void testSelectOne() {
-		Long bno = 1L;
+		Long bno = 538L;
 		
 		Board board = boardMapper.selectOne(bno);
 		
@@ -40,9 +40,9 @@ public class BoardMapperTest {
 	@DisplayName("목록 조회 3페이지 10개씩 2번 카테고리")
 	public void testList() {
 		
-		Criteria cri = new Criteria(3, 10, 2);
+		Criteria cri = new Criteria(1, 20, 2);
 		List<Board> list = boardMapper.list(cri);
-		list.forEach(b->log.info(b.getTitle()));
+		list.forEach(b->log.info("{} {} {}",b.getAttachCnt(), b.getReplyCnt(), b.getAttachs()));
 		
 	}
 	
