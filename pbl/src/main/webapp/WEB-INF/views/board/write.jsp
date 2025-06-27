@@ -10,16 +10,24 @@
 <body>
 <%@ include file="../common/header.jsp" %>
 <%@ include file="../common/nav.jsp" %>
+
     <div class="container p-0">
         <main>
-            <form method="post" id="writeForm">
-                <div class="small border-bottom border-3 border-secondary p-0 pb-2"><a href="#" class="small"><span class="text-primary">자유게시판</span> 카테고리</a></div>
+		<form>
+           <div class="small border-bottom border-3 border-secondary p-0 pb-2"><a href="#" class="small">
+            <span class="text-primary">
+                <c:forEach items="${cate}" var="c">
+                   <c:if test="${c.cno == cri.cno}">
+                   ${c.cname}
+                   </c:if>
+                </c:forEach>
+            </span> 
+			카테고리</a></div>
                 <div class="small p-0 py-2">
                     <input placeholder="글 제목 입력" class="form-control" name="title" id="title">
                 </div>
                 <div class="p-0 py-2 ps-1 border-top border-1 border-muted">
                     <textarea name="content" id="editor1" class="form-control resize-none">
-                        
                     </textarea>
                 </div>
                
@@ -39,7 +47,9 @@
                     </div>
                 </div>
                 <input type="hidden" name="id" value="${member.id}" />
-                <input type="hidden" name="cno" value="2" />
+                <input type="hidden" name="cno" value="${cri.cno}" />
+                <input type="hidden" name="page" value="1" />
+                <input type="hidden" name="amount" value="${cri.amount}" />
                 <input type="hidden" name="encodedStr" value="">
             </form>
         </main>
@@ -53,7 +63,7 @@
     </script>
 	<script>
 	$(function() {
-
+		$(".attach-list").sortable();
 		//return true / false
 		function validateFiles(files) {
 			const MAX_COUNT = 5;
@@ -150,7 +160,6 @@
 					console.log(thumbStr);
 					$(".attach-list").html(str);
 					$(".attach-thumb").html(thumbStr);
-					
 				}
 			});
 
@@ -161,14 +170,14 @@
 			$(".attach-list li").each(function() {
 				data.push({...this.dataset});
 			});
-			// console.log(JSON.stringify(data));
+			 console.log(JSON.stringify(data));
+			 data.forEach((item, idx) => item.odr = idx);
+			 
 			$("[name='encodedStr']").val(JSON.stringify(data));
 			this.submit();
 		})
 	})
 	</script>
-
-
 <%@ include file="../common/footer.jsp" %>
 </body>
 </html>

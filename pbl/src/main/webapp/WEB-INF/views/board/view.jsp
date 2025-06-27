@@ -17,18 +17,27 @@
 
 <div class="container p-0">
     <main>
+    <div class="small border-bottom border-3 border-secondary p-0 pb-2">
+                    <a href="#" class="small">
+                        <span class="text-primary">
+                            <c:forEach items="${cate}" var="c">
+                                <c:if test="${c.cno == cri.cno}">
+                                    ${c.cname}
+                                </c:if>
+                            </c:forEach>
+                        </span> 
+                        카테고리
+                    </a>
+                   </div>
         
 <!-- 보드 -->
-        <div class="small border-bottom border-3 border-primary p-0 pb-2">
-            <a href="#" class="small"><span class="text-primary">자유게시판</span> 카테고리</a>
-        </div>
-        
+       
            <div class="small p-0 py-2">
                 <span class="px-2 border-end border-1">잡담</span>
                 <span class="px-2">${board.title}</span> 
                 <div class="float-end small me-3">
                     <span class="text-muted"><i class="fa-solid fa-eye"></i> ${board.cnt}</span>
-                    <span class="text-muted"><i class="fa-regular fa-comment-dots"></i> 댓글</span>
+                    <span class="text-muted"><i class="fa-regular fa-comment-dots"></i> ${board.replyCnt}</span>
                 </div>
             </div>
             
@@ -52,12 +61,12 @@
                     <button class="btn btn-outline-secondary btn-sm"><i class="fa-solid fa-clipboard"></i> 스크랩</button>
                 </div>
             </div>
-            <%-- ${board.attachs} 첨부파일이 없는데도 목록있으면 무슨 값인지? 로그  --%>
+            <%-- ${board.attachs} 첨부파일이 없는데도 목록을 띄운다면!! 무슨 값이 있길래? 로그 찍어봐! --%>
 <!-- 첨부파일 유무 -->
-       
+        <c:if test="${fn:length(board.attachs) > 0}"> 
 			<div class="d-grid my-2 attach-area">
 				<div class="small my-1 border-bottom border-1 border-muted p-0 pb-2"><i class="fa-solid fa-paperclip"></i> 첨부파일</div>
-				<!-- <label class="btn btn-info">파일 첨부<input type="file" multiple="" class="d-none" id="f1"></label>  -->	
+				<!-- <label class="btn btn-info">파일 첨부<input type="file" multiple="" class="d-none" id="f1"></label> -->
 				<ul class="list-group my-2 attach-list">
 					<c:forEach items="${board.attachs}" var="a">
 					<li class="list-group-item d-flex align-items-center justify-content-between" 
@@ -68,7 +77,7 @@
 						data-size="${a.size}"
 						data-odr="${a.odr}">
 						<a href="/pbl/download?uuid=${a.uuid}&origin=${a.origin}&path=${a.path}">${a.origin}</a>
-					<!-- 	<i class="fa-solid fa-xmark float-end text-danger"></i>  -->
+						<!-- <i class="fa-solid fa-xmark float-end text-danger"></i> -->
 					</li>
 					</c:forEach>
 				</ul>  
@@ -80,14 +89,14 @@
 							data-uuid="${a.uuid}">
 							<div class="my-2 bg-primary" style="height: 150px; background-size: cover; 
 								background-image:url('/pbl/display?uuid=t_${a.uuid}&path=${a.path}')">
-								<!-- <i class="fa-solid fa-xmark float-end text-danger m-2"></i>  -->
+								<!-- <i class="fa-solid fa-xmark float-end text-danger m-2"></i> -->
 							</div>
 						</div>
 					</c:if>
 					</c:forEach>
 				</div> 
 			</div>
-		
+		</c:if>
             
 <!-- 댓글 -->
  		 <div class="small p-0 py-2 clearfix align-items-center d-flex border-top border-bottom border-1 border-muted mt-4">

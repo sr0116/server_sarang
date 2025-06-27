@@ -12,29 +12,35 @@
 <%@ include file="../common/nav.jsp" %>
     <div class="container p-0">
         <main>
-            <form id="modifyForm" method="post" action="modify" onsubmit="return confirm('수정하시겠습니까?')">
-                <div class="small border-bottom border-3 border-secondary p-0 pb-2"><a href="#" class="small"><span class="text-primary">자유게시판</span> 카테고리</a></div>
-                <div class="small p-0 py-2">
-                    <input placeholder="글 제목 입력" class="form-control" name="title" id="title" value="${board.title}">
-                </div>
-                <div class="p-0 py-2 ps-1 border-top border-1 border-muted">
-                    <textarea name="content" id="editor1" class="form-control resize-none">${board.content}</textarea>
-                </div>
-                <div>
-                    <button class="btn btn-secondary btn-sm"><i class="fa-solid fa-list-ul"></i> 목록</button>
-                    <div class="float-end">
-                        <button class="btn btn-outline-secondary btn-sm"><i class="fa-solid fa-pen"></i>  글 수정</button>
-                    </div>
-                </div>
-                <input type="hidden" name="id" value="${member.id}" />
-                <input type="hidden" name="bno" value="${board.bno}" />
-                <input type="hidden" name="cno" value="${cri.cno}" />
-                <input type="hidden" name="page" value="${cri.page}" />
-                <input type="hidden" name="amount" value="${cri.amount}" />
-                <input type="hidden" name="type" value="${cri.type}" />
-                <input type="hidden" name="keyword" value="${cri.keyword}" />
-                <input type="hidden" name="encodedStr" value="">
-            </form>
+        <form method="post" action="modify" id="modifyForm">
+        <div class="small border-bottom border-3 border-secondary p-0 pb-2">
+          <a href="#" class="small">
+           <span class="text-primary">
+               <c:forEach items="${cate}" var="c">
+                   <c:if test="${c.cno == cri.cno}">
+                       ${c.cname}
+                   </c:if>
+               </c:forEach>
+           </span>  카테고리</a></div>
+             <div class="p-0 py-2 small ">
+                 <textarea name="content" id="editor1" class="form-control resize-none">${board.content}</textarea>
+             </div>
+             <div class="my-2"></div>
+             <div>
+                 <a href="${cp}/board/list?${cri.qs2}" class="btn btn-outline-secondary btn-sm"><i class="fa-solid fa-list-ul"></i> 목록</a>
+                 <div class="float-end">
+                     <button class="btn btn-outline-secondary btn-sm"><i class="fa-solid fa-pen"></i>  글 수정</button>
+                 </div>
+             </div>
+             <input type="hidden" name="id" value="${member.id}" />
+             <input type="hidden" name="bno" value="${board.bno}" />
+             <input type="hidden" name="cno" value="${cri.cno}" />
+             <input type="hidden" name="page" value="${cri.page}" />
+             <input type="hidden" name="amount" value="${cri.amount}" />
+             <input type="hidden" name="type" value="${cri.type}" />
+             <input type="hidden" name="keyword" value="${cri.keyword}" />
+             <input type="hidden" name="encodedStr" value="">
+         </form>
             
 <!-- 첨부파일 유무 -->
 			<div class="d-grid my-2 attach-area">
@@ -72,6 +78,7 @@
 			
         </main>
     </div>
+     <script src="https://code.jquery.com/ui/1.14.1/jquery-ui.js"></script>
     <script>
         $(function() {
             CKEDITOR.replace('editor1', {
@@ -79,9 +86,10 @@
             });
         });        
     </script>
+   
    	<script>
 	$(function() {
-
+		$(".attach-list").sortable();
 		//return true / false
 		function validateFiles(files) {
 			const MAX_COUNT = 5;
@@ -118,30 +126,35 @@
 		$("#f1").change(function() {
  			event.preventDefault();
 			const formData = new FormData();
+		
+			const files = this.files; //여기서 this는 input type
 			
-			console.log(formData);
-			const files = this.files; //현재 input
-			
-			const data = [];
-			$(".attach-list li").each(function() {
+			const data = []; // 기존 파일목록이 들어갈 곳
+			$(".attach-list li").each(function(){
+				//console.log({...this.dataset});
 				data.push({...this.dataset});
 			});
 			
 			console.log('기존', data);
 			console.log('신규', [...files]);
-		
-			const mixedFiles = [...data.map(d => {return {name:d.origin, size:d.size/1} }), ...files ];
+			
+			const mixedFiles = [...data.map(d => { return {name:d.origin, size:d.size/1} }), ...files];
 			console.log(mixedFiles);
-			for(let i = 0; i < files.length; i++) {
+
+			for(let i = 0; i < files.length; i++){
 				formData.append("f1", files[i]);
 			}
-			
+		
+ 		/* $("#uploadForm").submit(function() { //파일 업로드 버튼 클릭시
+ 			event.preventDefault();
+			const formData = new FormData(this);
+			const files = this.f1.files; */
+
 			const valid = validateFiles(mixedFiles);
 			/* console.log(formData, valid); */
 			if(!valid) {
 				return;
 			}
-		
 			
 			$.ajax({
 				url : '${cp}/upload',
@@ -154,7 +167,7 @@
 				success : function(data){
 					console.log(data);
 					
-					//확인용
+					//확인용 * 비동기처리를 한 이후에 보여져야 할 동적 데이터
 					let str = "";
 					let thumbStr = "";
 					for(let a of data){
@@ -183,22 +196,26 @@
 								</div>`
 						}
 					}
-					console.log(thumbStr);
 					$(".attach-list").append(str);
 					$(".attach-thumb").append(thumbStr);
 				}
-			});
-
+			})
 		})
-		$("#modifyForm").submit(function(){
-			event.preventDefault();
+		$('#modifyForm').submit(function(){
+			event.preverntDefault();
+			if(!confirm("수정하시겠습니까?")){
+				return;			
+			}
+			
 			const data = [];
-			$(".attach-list li").each(function() {
+			$(".attach-list li").each(function(){
 				data.push({...this.dataset});
 			});
 			console.log(JSON.stringify(data));
+			data.forEach((item, idx) => item.odr = idx);
 			$("[name='encodedStr']").val(JSON.stringify(data));
 			this.submit();
+			
 		})
 	})
 	</script>

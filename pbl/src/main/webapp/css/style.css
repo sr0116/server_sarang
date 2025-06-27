@@ -49,7 +49,10 @@
                 
        /* 취소버튼*/         
        .attach-area i{cursor:pointer;}         
-       
+   
+	.attach-list{corsor: grab;}
+	.attach-list:active{corsor: grabbing;}
+	
        /* 썸네일*/         
        .attach-thumb div div { background: no-repeat center;}         
 
